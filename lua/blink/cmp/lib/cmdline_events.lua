@@ -23,9 +23,14 @@ function cmdline_events.new()
   }, { __index = cmdline_events })
 end
 
+local function contain_bang(str)
+  return string.find(str, "!") ~= nil
+end
+
+
 function cmdline_events:listen(opts)
   -- TextChanged
-  local on_changed = function(key) opts.on_char_added(key, false) end
+  local on_changed = function(key) opts.on_char_added(key, contain_bang(key)) end
 
   -- We handle backspace as a special case, because the text will have changed
   -- but we still want to fire the CursorMoved event, and not the TextChanged event
